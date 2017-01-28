@@ -1,0 +1,40 @@
+{% import "macros.html" as macros %}
+{% extends "base.html" %}
+{% block content %}
+
+{{ macros.render_entry(entry) }}
+
+<br/>
+        <button class="btn btn-danger delete-button">Delete</button>
+        <a href="/entry/{{entry.id}}/edit" class="btn btn-primary">Edit</a>
+
+<!-- 
+When button is clicked,
+delete the post
+hint: AJAX
+hint: send a method "DELETE"
+-->
+{% endblock %}
+
+{% block javascript %}
+<script>
+    $(document).ready(function() {
+        $('.delete-button').on('click', function(e) {
+            e.preventDefault();
+            // todo: prompt user 
+            var  q = confirm ("Are you sure you want to delete your entry?");
+            if (q) {
+                $.ajax({
+                    method: "DELETE",
+                    url: "/entry/{{entry.id}}/delete"
+                })
+                .done(function( msg ) {
+                    location.href = "/";
+                });
+            }
+            
+        })
+    })
+</script>
+
+{% endblock %}
